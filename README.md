@@ -97,8 +97,8 @@ Demoen viser prosjektets sentrale metode, sammenligningen av logistisk regresjon
 3. Åpne `Demo.ipynb` i Jupyter Notebook og velg **Run → Run All Cells**.
 
 **Tid og kostnad:**
-- Kjøretiden er omtrent ett minutt.
-- API-kostnaden er omtrent 0,03 USD: 350 kall og om lag 240 000 input-tokens.
+- Kjøretiden er omtrent 2 minutter.
+- API-kostnaden er omtrent 0,03 USD: 350 kall og om lag 200 000 input-tokens.
 - Demoen beregner kostnaden før API-kallene og stopper hvis anslaget er over 1 USD.
 - Til slutt skrives faktisk tokenbruk og kostnad ut.
 
