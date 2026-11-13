@@ -1,4 +1,4 @@
-# **Semesteroppgave høst 2026: Klassifisering av kredittkortklager**
+# Semesteroppgave høst 2026: Klassifisering av kredittkortklager
 
 **Gruppe:** 0302  
 **Gruppemedlemmer:** Maja Tronstad Espeset (10003), Lona Ilebrekke (10076)  
@@ -27,7 +27,7 @@ Consumer Complaint Database fra CFPB (Kaggle-versjonen: https://www.kaggle.com/d
 
 #### **Evaluering:** 
 - Macro-F1 er hovedmålet, og accuracy og F1 per kategori brukes som supplement.
-- Paired bootstrapping (1000 trekk) for å sjekke om forskjellen mellom metodene er reell
+- Paired bootstrapping (1000 trekk) for å sjekke om forskjellen mellom metodene er reell.
 - Feilene mellom metodene sammenlignes i forvekslingsmatriser, krysstabell, en lengdeanalyse og en manuell feilanalyse.
 
 ---
@@ -49,7 +49,7 @@ Consumer Complaint Database fra CFPB (Kaggle-versjonen: https://www.kaggle.com/d
 **Arbeidsflyt:** Notebook 1 → Notebook 2 → Notebook 3. 
 - Hver notebook bygger på filene den forrige lagret.
 - Alle CSV-filene ligger i repoet, så notebook 2, notebook 3 og demoen kan kjøres direkte uten å kjøre notebook 1 først.
-- Notebook 2 krever API-nøkkel, mens notebook 3 og demoen kan kjøres uten.
+- Notebook 2 og demoen krever API-nøkkel, mens notebook 1 og 3 kan kjøres uten.
 
 **Ikke inkludert:** Rådatafilen `Kundeklager.csv` (1,28 millioner klager) er ikke med i repoet fordi den er for stor. Den trengs bare for å kjøre notebook 1. Se «Kjøre hele analysen» for hvor den kan lastes ned.
 
@@ -86,28 +86,25 @@ Nøkkelen leses inn med `python-dotenv` og står aldri i koden. `.env` er oppfø
 Demoen viser prosjektets sentrale metode, sammenligningen av logistisk regresjon og LLM, på et lite utvalg av de faktiske dataene:
 
 1. Trener den balanserte logistiske regresjonsmodellen på treningssettet, med samme oppsett som i notebook 1.
-2. Trekker et stratifisert utvalg fra testsettet (140 klager, 20 per kategori, fast startverdi) og klassifiserer det med baselinen, den logistiske regresjonsmodellen og LLM-en (GPT-6 Luna med prompt B. Prompten og innstillingene er de samme som i notebook 2).
+2. Trekker et stratifisert utvalg fra testsettet (350 klager, med samme fordeling mellom kategoriene som i testsettet, fast startverdi) og klassifiserer det med baselinen, den logistiske regresjonsmodellen og LLM-en (GPT-6 Luna med prompt B). Prompten og innstillingene er de samme som i notebook 2.
+3. Sammenligner LLM-svarene med svarene fra kjøringen 23.10.2026 (lagret i `llm_test.csv`) og viser hvor mange klager som fikk et annet svar. Det illustrerer at svarene kan variere fra kjøring til kjøring med temperatur lik 1.
 4. Viser accuracy, macro-F1, F1 per kategori og noen eksempler der modellene er uenige.
 
 ##### **Slik kjører du den:**
 
-1. Installer pakkene som beskrevet over. Lag også `.env` for å kalle på API-nøkkelen.
+1. Installer pakkene som beskrevet over, og lag `.env` med API-nøkkelen (se "Installasjon"). Demoen stopper med en feilmelding hvis nøkkelen mangler. 
 2. Sjekk at `treningssett.csv`, `testsett.csv` og `llm_test.csv` ligger i samme mappe som `Demo.ipynb`. De ligger i repoet, så notebookene trenger ikke kjøres først.
 3. Åpne `Demo.ipynb` i Jupyter Notebook og velg **Run → Run All Cells**.
 
 **Tid og kostnad:**
-- Kjøretiden er under ett minutt.
-- API-kostnaden er omtrent 0,01 USD: 140 kall og om lag 90 000 input-tokens.
+- Kjøretiden er omtrent ett minutt.
+- API-kostnaden er omtrent 0,03 USD: 350 kall og om lag 240 000 input-tokens.
 - Demoen beregner kostnaden før API-kallene og stopper hvis anslaget er over 1 USD.
 - Til slutt skrives faktisk tokenbruk og kostnad ut.
 
-**Uten API-nøkkel:** Hvis `.env` mangler, kjøres demoen i *offline-modus*. LLM-svarene hentes da fra kjøringen vår 23.10.2026, som er lagret i `llm_test.csv`. Hele demoen kan dermed kjøres uten nøkkel og uten kostnad.
-
-**Med API-nøkkel:** Demoen sammenligner de nye svarene med de lagrede og viser hvor mange klager som fikk et annet svar. Det illustrerer at svarene kan variere fra kjøring til kjøring med temperatur 1.
-
 **Logging:** Hvert API-kall lagres som én linje i `logs/demo_logg.jsonl`. Linjen inneholder tidspunkt, Complaint ID, modell, innstillinger, prompt, fasit, svar, om svaret er en gyldig kategori, og tokenbruk.
 
-**Tolkning av resultatene:** Resultatene avviker fra rapporten, fordi utvalget er lite og har like mange klager i hver kategori. I offline-modus gir demoen accuracy 0,67 og macro-F1 0,67 for logistisk regresjon, og 0,66 og 0,67 for LLM-en. På så få klager er forskjellen mellom modellene ikke synlig. Resultatene i rapporten bygger på hele testsettet (3 583 klager).
+**Tolkning av resultatene:** Resultatene i demoen kan avvike fra hele analysen fordi utvalget er lite og fordi LLM-en kan svare annerledes ved hver kjøring (temperatur lik 1). Forskjellen mellom modellene i rapporten er liten, så den er ikke nødvendigvis synlig på et så lite utvalg.
 
 ---
 
@@ -129,4 +126,4 @@ Demoen viser prosjektets sentrale metode, sammenligningen av logistisk regresjon
   - Innstillinger: `reasoning={'effort': 'none'}` og standard temperatur (1).
   - Prompt A og B står i notebook 2.
   - Alle input og svar er lagret i `llm_validering.csv` og `llm_test.csv`.
-- **Svarene kan variere:** Fordi LLM-en kjøres med temperatur 1, kan en ny kjøring gi noe andre svar. Resultatene i rapporten bygger på de lagrede svarene.
+- **Svarene kan variere:** Fordi LLM-en kjøres med temperatur lik 1, kan en ny kjøring gi noe andre svar. Resultatene i rapporten bygger på de lagrede svarene.
