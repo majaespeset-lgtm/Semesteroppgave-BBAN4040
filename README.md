@@ -36,9 +36,9 @@ Consumer Complaint Database fra CFPB (Kaggle-versjonen: https://www.kaggle.com/d
 
 | Fil eller mappe | Innhold |
 |---|---|
-| `Notebook_1_-_Databehandling_og_logistisk_regresjon.ipynb` | Leser rådata, avgrenser og renser datasettet, lager trenings-, validerings- og testsett, trener logistisk regresjon og baseline. |
-| `Notebook_2_-_LLM__zero_shot_.ipynb` | Tester prompt A og B på valideringssettet og klassifiserer testsettet med prompt B via OpenAI API. |
-| `Notebook_3_-_Resultater.ipynb` | **Hovednotebook.** Samler resultatene fra notebook 1 og 2 og lager alle tabellene og figurene i rapporten, bootstrapping og utvalget til manuell feilanalyse. |
+| `Notebook 1 - Databehandling og logistisk regresjon.ipynb` | Leser rådata, avgrenser og renser datasettet, lager trenings-, validerings- og testsett, trener logistisk regresjon og baseline. |
+| `Notebook 2 - LLM (zero shot).ipynb` | Tester prompt A og B på valideringssettet og klassifiserer testsettet med prompt B via OpenAI API. |
+| `Notebook 3 - Resultater.ipynb` | **Hovednotebook.** Samler resultatene fra notebook 1 og 2 og lager alle tabellene og figurene i rapporten, bootstrapping og utvalget til manuell feilanalyse. |
 | `Demo.ipynb` | Liten reproduksjonsdemo (se under). |
 | `topp7.csv` | De 17 912 klagene etter avgrensning og fjerning av duplikater (fra notebook 1). |
 | `treningssett.csv`, `valideringssett.csv`, `testsett.csv` | Datasplittene fra notebook 1 (Complaint ID, kategori og klagetekst). |
@@ -57,7 +57,7 @@ Consumer Complaint Database fra CFPB (Kaggle-versjonen: https://www.kaggle.com/d
 
 ## Installasjon
 
-Krever Python 3.10 eller nyere, og disse pakkene: 
+Krever disse pakkene: 
 
 | Pakke | Brukes til |
 |---|---|
