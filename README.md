@@ -1,4 +1,5 @@
-# Semesteroppgave høst 2026: Klassifisering av kredittkortklager
+### Semesteroppgave høst 2026
+# Språkmodell eller logistisk regresjon? En sammenligning av metoder for klassifisering av kredittkortklager
 
 **Gruppe:** 0302  
 **Gruppemedlemmer:** Maja Tronstad Espeset (10003), Lona Ilebrekke (10076)  
